@@ -1,22 +1,25 @@
-const testimonials = [
-  {
-    name: "Client Name",
-    position: "Position",
-    text: "Great work! Very professional and creative. Highly recommended for any design project.",
-  },
-  {
-    name: "Client Name",
-    position: "Position",
-    text: "Excellent developer! Delivered the project on time with amazing quality. Will work again.",
-  },
-  {
-    name: "Client Name",
-    position: "Position",
-    text: "Outstanding work! Very talented designer with great attention to detail.",
-  },
-];
+import { useEffect, useState } from "react";
+import { FaStar, FaQuoteLeft } from "react-icons/fa";
 
 export default function Testimonials() {
+  const [testimonials, setTestimonials] = useState([]);
+
+  const API_URL = "http://localhost:5000/api/testimonials";
+
+  useEffect(() => {
+    fetchTestimonials();
+  }, []);
+
+  const fetchTestimonials = async () => {
+    try {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      setTestimonials(data);
+    } catch (err) {
+      console.error("Erro ao carregar depoimentos", err);
+    }
+  };
+
   return (
     <section className="py-20 bg-gray-900/20">
       <div className="max-w-6xl mx-auto px-6">
@@ -33,19 +36,45 @@ export default function Testimonials() {
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {testimonials.map((item, index) => (
+          {testimonials.map((t) => (
             <div
-              key={index}
-              className="bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 rounded-xl p-8"
+              key={t.id}
+              className="bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 rounded-xl p-8 relative"
             >
+              <FaQuoteLeft className="absolute top-4 right-4 text-[#a78bfa]/20 text-3xl" />
+
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 rounded-full bg-[#8b5cf6]"></div>
+                <img
+                  src={
+                    t.avatar
+                      ? `http://localhost:5000${t.avatar}`
+                      : "https://i.pravatar.cc/150"
+                  }
+                  alt={t.name}
+                  className="w-14 h-14 rounded-full object-cover border-2 border-[#a78bfa]"
+                />
+
                 <div>
-                  <h4 className="text-white font-semibold">{item.name}</h4>
-                  <p className="text-[#a78bfa] text-sm">{item.position}</p>
+                  <h4 className="text-white font-semibold">{t.name}</h4>
+                  <p className="text-[#a78bfa] text-sm">
+                    {t.role} • {t.company}
+                  </p>
                 </div>
               </div>
-              <p className="text-[#b8a9d8]">{item.text}</p>
+
+              {/* Stars */}
+              <div className="flex mb-3">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <FaStar
+                    key={i}
+                    className={i < t.rating ? "text-yellow-400" : "text-gray-600"}
+                  />
+                ))}
+              </div>
+
+              <p className="text-[#b8a9d8] text-sm leading-relaxed">
+                “{t.text}”
+              </p>
             </div>
           ))}
         </div>

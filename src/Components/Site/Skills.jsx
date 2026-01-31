@@ -1,15 +1,38 @@
-const skills = [
-  { name: "Figma", icon: "fab fa-figma", percentage: 92 },
-  { name: "Sketch", icon: "fab fa-sketch", percentage: 80 },
-  { name: "XD", icon: "fab fa-adobe", percentage: 85 },
-  { name: "WordPress", icon: "fab fa-wordpress", percentage: 90 },
-  { name: "React", icon: "fab fa-react", percentage: 95 },
-  { name: "JavaScript", icon: "fab fa-js", percentage: 80 },
-];
+import { useState, useEffect } from "react";
+import { FaQuestionCircle } from "react-icons/fa"; // fallback caso o ícone não exista
+import * as FaIcons from "react-icons/fa";
+import * as SiIcons from "react-icons/si";
+
+// Combina todos os ícones
+const Icons = { ...FaIcons, ...SiIcons };
 
 export default function Skills() {
+  const [skills, setSkills] = useState([]);
+
+  const API_URL = "http://localhost:5000/api/skills"; // ajuste conforme seu backend
+
+  // Buscar skills do backend
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        setSkills(data);
+      } catch (err) {
+        console.error("Erro ao buscar skills:", err);
+      }
+    };
+    fetchSkills();
+  }, []);
+
+  // Função para renderizar ícone dinamicamente
+  const renderIcon = (iconName) => {
+    const IconComponent = Icons[iconName];
+    return IconComponent ? <IconComponent className="text-4xl text-[#8b5cf6]" /> : <FaQuestionCircle className="text-4xl text-gray-400" />;
+  };
+
   return (
-    <section id="skills" className="py-20 ">
+    <section id="skills" className="py-20">
       <div className="max-w-6xl mx-auto px-6">
 
         {/* Título */}
@@ -26,10 +49,13 @@ export default function Skills() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-10 mt-10">
           {skills.map((skill, index) => (
             <div key={index} className="text-center">
-              <div className="w-20 h-20 bg-[#8b5cf6]/10 border border-[#8b5cf6]/30 rounded-lg flex items-center justify-center mx-auto mb-4 text-4xl text-[#8b5cf6]">
-                <i className={skill.icon}></i>
+              {/* Ícone */}
+              <div className="w-20 h-20 bg-[#8b5cf6]/10 border border-[#8b5cf6]/30 rounded-lg flex items-center justify-center mx-auto mb-4">
+                {renderIcon(skill.icon)}
               </div>
-              <div className="text-2xl font-bold mb-1 text-white">{skill.percentage}%</div>
+              {/* Percentual */}
+              <div className="text-2xl font-bold mb-1 text-white">{skill.percent}%</div>
+              {/* Nome */}
               <div className="text-[#a78bfa] text-sm">{skill.name}</div>
             </div>
           ))}

@@ -1,30 +1,24 @@
-import { useState } from "react";
-
-const services = [
-  {
-    number: "01",
-    title: "Branding Design",
-    desc: "I break down complex user experience problems to create integrity-focused solutions that connect billions of people",
-  },
-  {
-    number: "02",
-    title: "UI/UX Design",
-    desc: "I break down complex user experience problems to create integrity-focused solutions that connect billions of people",
-  },
-  {
-    number: "03",
-    title: "Web Design",
-    desc: "I break down complex user experience problems to create integrity-focused solutions that connect billions of people",
-  },
-  {
-    number: "04",
-    title: "App Design",
-    desc: "I break down complex user experience problems to create integrity-focused solutions that connect billions of people",
-  },
-];
+import { useState, useEffect } from "react";
 
 export default function Services() {
+  const [services, setServices] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  // 🔹 Buscar dados do backend
+  useEffect(() => {
+    fetch("http://localhost:5000/api/services") // ajuste a URL conforme o seu backend
+      .then(res => res.json())
+      .then(data => {
+        // Mapeando para o mesmo formato do card
+        const formatted = data.map((s, index) => ({
+          number: String(index + 1).padStart(2, "0"), // 01, 02, 03...
+          title: s.name,
+          desc: s.description,
+        }));
+        setServices(formatted);
+      })
+      .catch(err => console.error("Erro ao carregar serviços:", err));
+  }, []);
 
   return (
     <section id="service" className="py-20 bg-gray-900/20">
@@ -32,7 +26,7 @@ export default function Services() {
 
         {/* Título */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
+          <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-linear-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
             My Quality Services
           </h2>
           <p className="text-[#a78bfa]/70 max-w-2xl mx-auto">
@@ -50,9 +44,8 @@ export default function Services() {
                 key={index}
                 onClick={() => setActiveIndex(index)}
                 className={`flex items-center justify-between p-6 rounded-xl border cursor-pointer transition-all duration-300
-                  ${
-                    isActive
-                      ? "bg-gradient-to-r from-[#a78bfa]/30 to-[#6b3ff0]/30 border-[#a78bfa]/50 text-white shadow-lg shadow-purple-500/10"
+                  ${isActive
+                      ? "bg-linear-to-r from-[#a78bfa]/30 to-[#6b3ff0]/30 border-[#a78bfa]/50 text-white shadow-lg shadow-purple-500/10"
                       : "bg-gray-900/50 border-white/5 text-white/70 hover:border-[#a78bfa]/30 hover:bg-gray-900/70"
                   }`}
               >
@@ -62,13 +55,7 @@ export default function Services() {
                   </span>
 
                   <div>
-                    <h3
-                      className={`text-lg font-semibold mb-1 ${
-                        isActive
-                          ? "bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent"
-                          : "text-white"
-                      }`}
-                    >
+                    <h3 className={`text-lg font-semibold mb-1 ${isActive ? "bg-linear-to-r from-white to-[#a78bfa] bg-clip-text text-transparent" : "text-white"}`}>
                       {service.title}
                     </h3>
                     <p className={`text-sm ${isActive ? "text-white/90" : "text-white/60"}`}>

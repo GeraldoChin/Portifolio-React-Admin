@@ -11,6 +11,8 @@ import Education from "../Pages/AdminPage/Educationpage";
 import Skills from "../Pages/AdminPage/SkillsPage";
 import Testimonials from "../Pages/AdminPage/TestimonialsPage";
 import Settings from "../Pages/AdminPage/SettingsPage";
+import Blogs from "../Pages/AdminPage/BlogsPage";
+import Contact from "../Pages/AdminPage/ContactPage"; // Nova página de Contact
 
 export default function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
@@ -38,6 +40,8 @@ export default function AdminLayout() {
             <Route path="skills" element={<Skills />} />
             <Route path="testimonials" element={<Testimonials />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="blogs" element={<Blogs />} />
+            <Route path="contact" element={<Contact />} /> {/* Página de Contact */}
           </Routes>
         </main>
       </div>

@@ -9,6 +9,8 @@ import {
   FaStar,
   FaComment,
   FaSignOutAlt,
+  FaPenFancy, // Blogs
+  FaEnvelope, // Contact
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -26,6 +28,8 @@ export default function Sidebar({
     { name: "Educação", icon: <FaGraduationCap />, path: "/admin/education" },
     { name: "Skills", icon: <FaStar />, path: "/admin/skills" },
     { name: "Depoimentos", icon: <FaComment />, path: "/admin/testimonials" },
+    { name: "Blogs", icon: <FaPenFancy />, path: "/admin/blogs" },
+    { name: "Contact", icon: <FaEnvelope />, path: "/admin/contact" }, // Novo link
   ];
 
   return (
@@ -46,7 +50,7 @@ export default function Sidebar({
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar Mobile */}
       <aside
         className={`
           flex flex-col bg-gray-900 border-r border-purple-800 transition-all duration-300
@@ -58,11 +62,8 @@ export default function Sidebar({
       >
         {/* Topo */}
         <div className="flex items-center justify-between px-4 py-4 border-b border-purple-800">
-          {!collapsed && (
-            <span className="text-purple-400 font-bold">Admin Panel</span>
-          )}
+          {!collapsed && <span className="text-purple-400 font-bold">Admin Panel</span>}
 
-          {/* Botão collapse desktop */}
           <button
             onClick={() => setCollapsed(!collapsed)}
             className="text-gray-300 hover:text-white hidden lg:block"
@@ -70,7 +71,6 @@ export default function Sidebar({
             {collapsed ? <FaTimes /> : <FaBars />}
           </button>
 
-          {/* Botão mobile */}
           {!collapsed && (
             <button
               onClick={() => setMobileOpen(false)}
@@ -108,7 +108,6 @@ export default function Sidebar({
               <span className="text-purple-400 text-lg">{item.icon}</span>
               {!collapsed && item.name}
 
-              {/* Tooltip quando colapsado */}
               {collapsed && (
                 <span className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2 py-1 bg-gray-800 rounded-md text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                   {item.name}
@@ -120,14 +119,12 @@ export default function Sidebar({
 
         {/* Rodapé */}
         <div className="p-3 border-t border-purple-800 space-y-2">
-      
-
-          <Link to="/admin/config" className="w-full flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-300 py-2 rounded-lg transition">
+          <Link
+            to="/admin/settings"
+            className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-purple-700 text-white rounded-lg transition w-full justify-center"
+          >
             <FaCog /> {!collapsed && "Configurações"}
           </Link>
-
-
-
           <button className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition">
             <FaSignOutAlt /> {!collapsed && "Logout"}
           </button>
@@ -144,9 +141,7 @@ export default function Sidebar({
       >
         {/* Topo */}
         <div className="flex items-center justify-between px-4 py-4 border-b border-purple-800">
-          {!collapsed && (
-            <span className="text-purple-400 font-bold">Admin Panel</span>
-          )}
+          {!collapsed && <span className="text-purple-400 font-bold">Admin Panel</span>}
 
           <button
             onClick={() => setCollapsed(!collapsed)}
@@ -193,12 +188,12 @@ export default function Sidebar({
 
         {/* Rodapé */}
         <div className="p-3 border-t border-purple-800 space-y-2">
-     <Link
-          to="/admin/settings"
-          className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-purple-700 text-white rounded-lg transition w-full justify-center"
-        >
-          <FaCog /> Configurações
-        </Link>
+          <Link
+            to="/admin/settings"
+            className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-purple-700 text-white rounded-lg transition w-full justify-center"
+          >
+            <FaCog /> {!collapsed && "Configurações"}
+          </Link>
           <button className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition">
             <FaSignOutAlt /> {!collapsed && "Logout"}
           </button>

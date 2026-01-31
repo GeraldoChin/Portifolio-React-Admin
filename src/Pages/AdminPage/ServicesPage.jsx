@@ -1,78 +1,117 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { FaPlus, FaEdit, FaTrash, FaSearch, FaCogs, FaLayerGroup, FaRocket, FaUsers } from "react-icons/fa";
-import {
-  PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer
-} from "recharts";
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 export default function ServicesPage() {
-  const [services, setServices] = useState([
-    { id: 1, name: "Web Design", description: "Criação de sites responsivos", icon: <FaCogs />, category: "Design" },
-    { id: 2, name: "SEO", description: "Otimização para motores de busca", icon: <FaRocket />, category: "Marketing" },
-    { id: 3, name: "Consultoria", description: "Consultoria tecnológica", icon: <FaLayerGroup />, category: "Consulting" },
-    { id: 4, name: "Mobile App", description: "Aplicativos Android/iOS", icon: <FaUsers />, category: "Desenvolvimento" },
-  ]);
-
+  // Estado principal dos serviços
+  const [services, setServices] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({ name: "", description: "", icon: "", category: "" });
+  const [formData, setFormData] = useState({ id: null, name: "", description: "", icon: "FaCogs", category: "" });
   const [searchTerm, setSearchTerm] = useState("");
 
-  const openForm = () => setShowForm(true);
+  // Mapa de ícones para renderização segura
+  const iconMap = {
+    FaCogs: <FaCogs />,
+    FaLayerGroup: <FaLayerGroup />,
+    FaRocket: <FaRocket />,
+    FaUsers: <FaUsers />,
+  };
+
+  // Fetch inicial para carregar os serviços do backend
+  useEffect(() => {
+    fetch("http://localhost:5000/api/services")
+      .then(res => res.json())
+      .then(data => setServices(data))
+      .catch(err => console.error("Erro ao carregar serviços:", err));
+  }, []);
+
+  // Abrir e fechar formulário
+  const openForm = (service = null) => {
+    if (service) setFormData(service); // Para editar
+    setShowForm(true);
+  };
   const closeForm = () => {
     setShowForm(false);
-    setFormData({ name: "", description: "", icon: "", category: "" });
+    setFormData({ id: null, name: "", description: "", icon: "FaCogs", category: "" });
   };
 
-  const handleSubmit = (e) => {
+  // Função para salvar (create ou update)
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setServices([...services, { ...formData, id: Date.now() }]);
-    closeForm();
+    try {
+      if (formData.id) {
+        // Update
+        const res = await fetch(`http://localhost:5000/api/services/${formData.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        if (!res.ok) throw new Error("Erro ao atualizar serviço");
+        // const updated = await res.json();
+        setServices(prev => prev.map(s => s.id === formData.id ? formData : s));
+      } else {
+        // Create
+        const res = await fetch("http://localhost:5000/api/services", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        if (!res.ok) throw new Error("Erro ao criar serviço");
+        const newService = await res.json();
+        // Se o backend retornar o serviço criado, podemos usar newService
+        setServices(prev => [...prev, { ...formData, id: newService.id || Date.now() }]);
+      }
+      closeForm();
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
   };
 
-  const deleteService = (id) => {
-    setServices(services.filter((s) => s.id !== id));
+  // Delete
+  const deleteService = async (id) => {
+    if (!confirm("Deseja realmente deletar este serviço?")) return;
+    try {
+      const res = await fetch(`http://localhost:5000/api/services/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Erro ao deletar serviço");
+      setServices(prev => prev.filter(s => s.id !== id));
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
   };
 
-  const COLORS = ["#a78bfa", "#f472b6", "#34d399", "#facc15", "#60a5fa"];
-  
   // Preparar dados do gráfico
+  const COLORS = ["#a78bfa", "#f472b6", "#34d399", "#facc15", "#60a5fa"];
   const chartData = useMemo(() => {
     const counts = {};
-    services.forEach((s) => counts[s.category] = (counts[s.category] || 0) + 1);
-    return Object.keys(counts).map((key) => ({ name: key, value: counts[key] }));
+    services.forEach(s => counts[s.category] = (counts[s.category] || 0) + 1);
+    return Object.keys(counts).map(key => ({ name: key, value: counts[key] }));
   }, [services]);
 
   // Filtrar serviços pela busca
-  const filteredServices = useMemo(() => 
+  const filteredServices = useMemo(() =>
     services.filter(s =>
       s.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       s.category.toLowerCase().includes(searchTerm.toLowerCase())
     ), [services, searchTerm]
   );
 
-  // Cards de números mais bonitos
-//   const stats = [
-//     { title: "Total de Serviços", value: services.length, icon: <FaCogs className="text-3xl" />, bg: "from-purple-500 to-indigo-500" },
-//     { title: "Categorias", value: new Set(services.map(s => s.category)).size, icon: <FaLayerGroup className="text-3xl" />, bg: "from-pink-500 to-rose-500" },
-//     { title: "Ativos", value: services.length, icon: <FaUsers className="text-3xl" />, bg: "from-green-500 to-lime-500" },
-//     { title: "Último Adicionado", value: services[services.length-1]?.name || "-", icon: <FaRocket className="text-3xl" />, bg: "from-yellow-400 to-orange-400" },
-//   ];
-
   return (
     <div className="space-y-8 animate-fadeIn">
 
-      {/* Cabeçalho e ações */}
+      {/* Cabeçalho e botão Novo Serviço */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <h2 className="text-2xl font-bold text-white">Gerenciar Serviços</h2>
         <button
-          onClick={openForm}
+          onClick={() => openForm()}
           className="flex items-center gap-2 px-5 py-2 bg-[#a78bfa]/20 text-[#a78bfa] rounded-lg hover:bg-[#a78bfa]/30 transition"
         >
           <FaPlus /> Novo Serviço
         </button>
       </div>
 
-    
-    {/* Cards de estatísticas */}
+      {/* Cards de estatísticas */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-gray-900/80 rounded-xl p-6 flex flex-col items-center hover:shadow-lg hover:shadow-[#a78bfa]/20 transition">
           <p className="text-gray-400">Total de Serviços</p>
@@ -88,7 +127,7 @@ export default function ServicesPage() {
         </div>
         <div className="bg-gray-900/80 rounded-xl p-6 flex flex-col items-center hover:shadow-lg hover:shadow-[#facc15]/20 transition">
           <p className="text-gray-400">Última Adição</p>
-          <h3 className="text-2xl font-bold text-white">{services[services.length-1]?.name || "-"}</h3>
+          <h3 className="text-2xl font-bold text-white">{services[services.length - 1]?.name || "-"}</h3>
         </div>
       </div>
 
@@ -114,7 +153,7 @@ export default function ServicesPage() {
         <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
           {filteredServices.map(s => (
             <div key={s.id} className="bg-gray-900/80 rounded-xl p-6 flex flex-col items-center text-center hover:shadow-lg hover:shadow-[#a78bfa]/20 transition">
-              <div className="text-4xl mb-4">{s.icon}</div>
+              <div className="text-4xl mb-4">{iconMap[s.icon] || <FaCogs />}</div>
               <h3 className="text-white font-semibold text-lg">{s.name}</h3>
               <p className="text-gray-400 text-sm mt-2">{s.description}</p>
               <span className="mt-2 text-xs px-2 py-1 rounded-full bg-purple-600/20 text-purple-400">{s.category}</span>
@@ -123,7 +162,7 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      {/* Filtro / Busca */}
+      {/* Busca */}
       <div className="flex justify-end mb-2">
         <div className="relative">
           <input
@@ -153,12 +192,12 @@ export default function ServicesPage() {
           <tbody>
             {filteredServices.map(s => (
               <tr key={s.id} className="hover:bg-[#a78bfa]/10 transition">
-                <td className="p-3 text-xl">{s.icon}</td>
+                <td className="p-3 text-xl">{iconMap[s.icon] || <FaCogs />}</td>
                 <td className="p-3">{s.name}</td>
                 <td className="p-3">{s.description}</td>
                 <td className="p-3">{s.category}</td>
                 <td className="p-3 flex gap-2">
-                  <button className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition"><FaEdit /></button>
+                  <button onClick={() => openForm(s)} className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition"><FaEdit /></button>
                   <button onClick={() => deleteService(s.id)} className="p-2 bg-red-800 hover:bg-red-700 rounded-lg transition"><FaTrash /></button>
                 </td>
               </tr>
@@ -171,36 +210,36 @@ export default function ServicesPage() {
       {showForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-gray-900 rounded-xl p-6 w-full max-w-lg">
-            <h3 className="text-white font-semibold text-lg mb-4">Novo Serviço</h3>
+            <h3 className="text-white font-semibold text-lg mb-4">{formData.id ? "Editar Serviço" : "Novo Serviço"}</h3>
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="flex flex-col">
                 <label className="text-gray-400 text-sm mb-1">Nome</label>
                 <input type="text" required
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="bg-gray-800 text-white p-3 rounded-lg outline-none focus:border-[#a78bfa] border border-gray-700"/>
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="bg-gray-800 text-white p-3 rounded-lg outline-none focus:border-[#a78bfa] border border-gray-700" />
               </div>
               <div className="flex flex-col">
                 <label className="text-gray-400 text-sm mb-1">Descrição</label>
                 <textarea required
                   value={formData.description}
-                  onChange={(e) => setFormData({...formData, description: e.target.value})}
-                  className="bg-gray-800 text-white p-3 rounded-lg outline-none border border-gray-700"/>
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="bg-gray-800 text-white p-3 rounded-lg outline-none border border-gray-700" />
               </div>
               <div className="flex flex-col">
                 <label className="text-gray-400 text-sm mb-1">Ícone (React Icon)</label>
                 <input type="text" required
                   value={formData.icon}
-                  onChange={(e) => setFormData({...formData, icon: e.target.value})}
+                  onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
                   placeholder="Ex: FaCogs"
-                  className="bg-gray-800 text-white p-3 rounded-lg outline-none border border-gray-700"/>
+                  className="bg-gray-800 text-white p-3 rounded-lg outline-none border border-gray-700" />
               </div>
               <div className="flex flex-col">
                 <label className="text-gray-400 text-sm mb-1">Categoria</label>
                 <input type="text" required
                   value={formData.category}
-                  onChange={(e) => setFormData({...formData, category: e.target.value})}
-                  className="bg-gray-800 text-white p-3 rounded-lg outline-none border border-gray-700"/>
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  className="bg-gray-800 text-white p-3 rounded-lg outline-none border border-gray-700" />
               </div>
               <div className="flex justify-end gap-3 mt-4">
                 <button type="button" onClick={closeForm} className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg">Cancelar</button>
@@ -214,5 +253,3 @@ export default function ServicesPage() {
     </div>
   );
 }
-
-

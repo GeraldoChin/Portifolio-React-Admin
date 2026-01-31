@@ -1,25 +1,41 @@
-const blogs = [
-  {
-    date: "08 January 2024",
-    title: "How to Create a Strong Visual Hierarchy",
-    author: "Gerrald",
-    image: "/img/aluno1.jpg",
-  },
-  {
-    date: "05 January 2024",
-    title: "The Future of Web Design: Trends to Watch in 2024",
-    author: "Gerrald",
-    image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect fill='%231a0033' width='600' height='400'/%3E%3Crect x='150' y='100' width='300' height='200' fill='%238b5cf6' opacity='0.3' rx='10'/%3E%3C/svg%3E",
-  },
-  {
-    date: "02 January 2024",
-    title: "UX Design Best Practices for Mobile Applications",
-    author: "Gerrald",
-    image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect fill='%231a0033' width='600' height='400'/%3E%3Cpath d='M200,200 L400,150 L350,300 Z' fill='%238b5cf6' opacity='0.3'/%3E%3C/svg%3E",
-  },
-];
+import { useState, useEffect } from "react";
 
 export default function Blogs() {
+  const [blogs, setBlogs] = useState([]);
+  const API_URL = "http://localhost:5000/api/blogs"; // ajuste conforme seu backend
+
+  // ===== ARRAY DE MESES =====
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  // ===== FUNÇÃO PARA FORMATAR DATA =====
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
+  // ===== PEGAR BLOGS DO BACKEND =====
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const fetchBlogs = async () => {
+    try {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      setBlogs(data);
+    } catch (err) {
+      console.error("Erro ao buscar blogs:", err);
+    }
+  };
+  
+
   return (
     <section className="py-20 ">
       <div className="max-w-6xl mx-auto px-6">
@@ -36,20 +52,26 @@ export default function Blogs() {
 
         {/* Grid de blogs */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {blogs.map((blog, index) => (
+          {blogs.map((blog) => (
             <div
-              key={index}
+              key={blog.id}
               className="bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 rounded-xl overflow-hidden cursor-pointer transition-transform hover:translate-y-[-5px]"
             >
               <div className="w-full h-64 bg-[#1a0033] flex items-center justify-center overflow-hidden">
                 <img
-                  src={blog.image}
+                  src={
+                    blog.image?.startsWith("http")
+                      ? blog.image
+                      : `http://localhost:5000/uploads/blogs/${blog.image}`
+                  }
                   alt={blog.title}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="p-6">
-                <div className="text-[#8b5cf6] text-sm mb-2">{blog.date}</div>
+                <div className="text-[#8b5cf6] text-sm mb-2">
+                  {formatDate(blog.date)}
+                </div>
                 <h3 className="text-white text-lg font-semibold mb-3">{blog.title}</h3>
                 <div className="flex items-center gap-2 text-[#a78bfa] text-sm">
                   <i className="far fa-user"></i>

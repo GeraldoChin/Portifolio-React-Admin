@@ -14,7 +14,7 @@ export default function Header() {
 
       {/* Título */}
       <div>
-        <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
+        <h1 className="text-2xl font-bold bg-linear-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
           Admin Dashboard
         </h1>
         <p className="text-sm text-gray-400">Gerencie seu portfólio</p>
