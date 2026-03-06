@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 export default function Resume() {
   const [experienceData, setExperienceData] = useState([]);
   const [educationData, setEducationData] = useState([]);
 
-  // Substitua pelas URLs da sua API
   const EXPERIENCE_API = "http://localhost:5000/api/experiences";
   const EDUCATION_API = "http://localhost:5000/api/education";
 
-  // Buscar dados ao carregar a página
   useEffect(() => {
     fetchExperiences();
     fetchEducation();
@@ -34,6 +33,24 @@ export default function Resume() {
     }
   };
 
+  // Card animado
+  const AnimatedCard = ({ children }) => {
+    const ref = useRef(null);
+    const inView = useInView(ref, { once: true, margin: "-100px" }); // dispara quando entra na tela
+
+    return (
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 40 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative pl-8 bg-gray-900/50 backdrop-blur-sm border border-white/5 rounded-lg p-4 md:p-5 hover:scale-[1.02] hover:border-[#a78bfa]/30 transition-all duration-300"
+      >
+        {children}
+      </motion.div>
+    );
+  };
+
   return (
     <section id="resume" className="py-20 bg-gray-900/20">
       <div className="max-w-6xl mx-auto px-6">
@@ -44,14 +61,9 @@ export default function Resume() {
             <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
               💼 My Experience
             </h2>
-
             <div className="space-y-4">
               {experienceData.map((item) => (
-                <div
-                  key={item.id}
-                  className="relative pl-8 bg-gray-900/50 backdrop-blur-sm border border-white/5 rounded-lg p-4 md:p-5 
-                             hover:scale-[1.02] hover:border-[#a78bfa]/30 transition-all duration-300"
-                >
+                <AnimatedCard key={item.id}>
                   <span className="absolute -left-1.5 top-6 w-3 h-3 rounded-full bg-[#a78bfa]"></span>
                   <div className="border-l border-white/10 pl-5">
                     <div className="text-[#8b5cf6] text-xs mb-1">{item.period}</div>
@@ -63,7 +75,7 @@ export default function Resume() {
                     </h4>
                     {item.description && <p className="text-gray-300 text-sm mt-1">{item.description}</p>}
                   </div>
-                </div>
+                </AnimatedCard>
               ))}
             </div>
           </div>
@@ -73,14 +85,9 @@ export default function Resume() {
             <h2 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
               🎓 My Education
             </h2>
-
             <div className="space-y-4">
               {educationData.map((item) => (
-                <div
-                  key={item.id}
-                  className="relative pl-8 bg-gray-900/50 backdrop-blur-sm border border-white/5 rounded-lg p-4 md:p-5 
-                             hover:scale-[1.02] hover:border-[#a78bfa]/30 transition-all duration-300"
-                >
+                <AnimatedCard key={item.id}>
                   <span className="absolute -left-1.5 top-6 w-3 h-3 rounded-full bg-[#a78bfa]"></span>
                   <div className="border-l border-white/10 pl-5">
                     <div className="text-[#8b5cf6] text-xs mb-1">{item.period}</div>
@@ -91,7 +98,7 @@ export default function Resume() {
                       {item.institution}
                     </h4>
                   </div>
-                </div>
+                </AnimatedCard>
               ))}
             </div>
           </div>

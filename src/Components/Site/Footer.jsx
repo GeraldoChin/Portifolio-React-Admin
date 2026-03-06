@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold">
             G
           </div>
-          <span className="text-white font-semibold">Gerrald</span>
+          <span className="text-white font-semibold">Geraldo Chin</span>
         </div>
 
         {/* Navigation Links */}
@@ -26,7 +26,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <p className="text-[#a78bfa] text-sm">
-          © 2024 Gerrald. All rights reserved.
+          © 2024 Geraldo Chin. All rights reserved.
         </p>
       </div>
     </footer>

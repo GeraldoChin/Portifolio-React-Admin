@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 const API_URL = "http://localhost:5000/api/projects";
 const UPLOADS_URL = "http://localhost:5000/uploads";
@@ -14,13 +15,9 @@ export default function Works() {
       try {
         const res = await fetch(API_URL);
         const data = await res.json();
-
-        // 👉 apenas projetos concluídos
         const completed = data.filter(p => p.status === "Concluído");
 
         setProjects(completed);
-
-        // 👉 filtros por categoria
         const categories = ["All", ...new Set(completed.map(p => p.category))];
         setFilters(categories);
       } catch (err) {
@@ -45,19 +42,63 @@ export default function Works() {
     );
   }
 
+  // Card individual com efeito "aparecer de baixo para cima"
+  const ProjectCard = ({ project, index }) => {
+    const cardRef = useRef(null);
+    const inView = useInView(cardRef, { once: true, margin: "-100px" });
+
+    return (
+      <motion.div
+        ref={cardRef}
+        initial={{ opacity: 0, y: 50 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
+        whileHover={{
+          scale: 1.03,
+          boxShadow: "0 20px 40px rgba(167, 139, 250, 0.3)"
+        }}
+        className="bg-gray-900/50 border border-white/5 rounded-xl overflow-hidden cursor-pointer"
+      >
+        <div className="w-full h-64 overflow-hidden">
+          <img
+            src={
+              project.image
+                ? `${UPLOADS_URL}/${project.image}`
+                : "https://via.placeholder.com/400x250?text=No+Image"
+            }
+            alt={project.title}
+            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+          />
+        </div>
+
+        <div className="p-5">
+          <h3 className="text-lg font-semibold text-white mb-2">{project.title}</h3>
+          <div className="text-[#a78bfa]/70 text-sm">
+            {project.category} • {project.status}
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
+
   return (
-    <section className="py-20 bg-gray-900/20">
+    <section id="works" className="py-20 bg-gray-900/20">
       <div className="max-w-6xl mx-auto px-6">
 
         {/* Título */}
-        <div className="text-center mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
           <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
             My Recent Works
           </h2>
           <p className="text-[#a78bfa]/70 max-w-2xl mx-auto">
             We put your ideas and your wishes in the form of a unique web project.
           </p>
-        </div>
+        </motion.div>
 
         {/* Filtros */}
         <div className="flex justify-center gap-4 mb-12 flex-wrap">
@@ -79,32 +120,8 @@ export default function Works() {
 
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filteredProjects.map(p => (
-            <div
-              key={p.id}
-              className="bg-gray-900/50 border border-white/5 rounded-xl overflow-hidden hover:border-[#a78bfa]/30 transition"
-            >
-              <div className="w-full h-64 overflow-hidden">
-                <img
-                  src={
-                    p.image
-                      ? `${UPLOADS_URL}/${p.image}`
-                      : "https://via.placeholder.com/400x250?text=No+Image"
-                  }
-                  alt={p.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  {p.title}
-                </h3>
-                <div className="text-[#a78bfa]/70 text-sm">
-                  {p.category} • {p.status}
-                </div>
-              </div>
-            </div>
+          {filteredProjects.map((p, i) => (
+            <ProjectCard key={p.id} project={p} index={i} />
           ))}
 
           {filteredProjects.length === 0 && (

@@ -1,29 +1,64 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FaStar, FaQuoteLeft } from "react-icons/fa";
 
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState([]);
+  const cardRefs = useRef([]);
+  cardRefs.current = [];
+
+  const addToRefs = (el) => {
+    if (el && !cardRefs.current.includes(el)) {
+      cardRefs.current.push(el);
+    }
+  };
 
   const API_URL = "http://localhost:5000/api/testimonials";
 
   useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        setTestimonials(data);
+      } catch (err) {
+        console.error("Erro ao carregar depoimentos", err);
+      }
+    };
     fetchTestimonials();
   }, []);
 
-  const fetchTestimonials = async () => {
-    try {
-      const res = await fetch(API_URL);
-      const data = await res.json();
-      setTestimonials(data);
-    } catch (err) {
-      console.error("Erro ao carregar depoimentos", err);
-    }
-  };
+  useEffect(() => {
+    if (!cardRefs.current) return;
+
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: "0px 0px -50px 0px",
+    };
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Faz o card aparecer
+          entry.target.style.opacity = 1;
+          entry.target.style.transform = "translateY(0)";
+          entry.target.style.transition = `all 0.6s ease-out ${entry.target.dataset.index * 0.2}s`;
+          obs.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    cardRefs.current.forEach((el) => {
+      el.style.opacity = 0;
+      el.style.transform = "translateY(30px)";
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [testimonials]);
 
   return (
     <section className="py-20 bg-gray-900/20">
       <div className="max-w-6xl mx-auto px-6">
-
         {/* Título */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
@@ -36,9 +71,11 @@ export default function Testimonials() {
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {testimonials.map((t) => (
+          {testimonials.map((t, index) => (
             <div
               key={t.id}
+              ref={addToRefs}
+              data-index={index} // usado para delay individual
               className="bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 rounded-xl p-8 relative"
             >
               <FaQuoteLeft className="absolute top-4 right-4 text-[#a78bfa]/20 text-3xl" />
@@ -53,7 +90,6 @@ export default function Testimonials() {
                   alt={t.name}
                   className="w-14 h-14 rounded-full object-cover border-2 border-[#a78bfa]"
                 />
-
                 <div>
                   <h4 className="text-white font-semibold">{t.name}</h4>
                   <p className="text-[#a78bfa] text-sm">
@@ -62,7 +98,6 @@ export default function Testimonials() {
                 </div>
               </div>
 
-              {/* Stars */}
               <div className="flex mb-3">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <FaStar
@@ -72,9 +107,7 @@ export default function Testimonials() {
                 ))}
               </div>
 
-              <p className="text-[#b8a9d8] text-sm leading-relaxed">
-                “{t.text}”
-              </p>
+              <p className="text-[#b8a9d8] text-sm leading-relaxed">“{t.text}”</p>
             </div>
           ))}
         </div>
