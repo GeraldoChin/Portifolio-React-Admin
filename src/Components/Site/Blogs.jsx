@@ -1,17 +1,31 @@
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 export default function Blogs() {
-  const [blogs, setBlogs] = useState([]);
-  const cardRefs = useRef([]);
-  cardRefs.current = [];
-
-  const addToRefs = (el) => {
-    if (el && !cardRefs.current.includes(el)) {
-      cardRefs.current.push(el);
-    }
-  };
-
-  const API_URL = "http://localhost:5000/api/blogs"; // ajuste conforme seu backend
+  // 🔹 Dados estáticos dos blogs
+  const blogs = [
+    {
+      id: 1,
+      title: "How to Build Modern Web Apps",
+      author: "Alice Johnson",
+      date: "2026-02-15",
+      image: "https://via.placeholder.com/400x250?text=Blog+1",
+    },
+    {
+      id: 2,
+      title: "UI/UX Tips for Developers",
+      author: "Bob Smith",
+      date: "2026-01-10",
+      image: "https://via.placeholder.com/400x250?text=Blog+2",
+    },
+    {
+      id: 3,
+      title: "Optimizing Web Performance",
+      author: "Carla Mendes",
+      date: "2025-12-20",
+      image: "https://via.placeholder.com/400x250?text=Blog+3",
+    },
+  ];
 
   const months = [
     "January", "February", "March", "April", "May", "June",
@@ -27,50 +41,25 @@ export default function Blogs() {
     return `${day} ${month} ${year}`;
   };
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        setBlogs(data);
-      } catch (err) {
-        console.error("Erro ao buscar blogs:", err);
-      }
-    };
-    fetchBlogs();
-  }, []);
+  const AnimatedCard = ({ children, index }) => {
+    const ref = useRef(null);
+    const inView = useInView(ref, { once: true, margin: "-50px" });
 
-  // === Animação dos cards ===
-  useEffect(() => {
-    if (!cardRefs.current) return;
-
-    const observerOptions = {
-      threshold: 0.2,
-      rootMargin: "0px 0px -50px 0px",
-    };
-
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = 1;
-          entry.target.style.transform = "translateY(0)";
-          entry.target.style.transition = `all 0.6s ease-out ${entry.target.dataset.index * 0.2}s`;
-          obs.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    cardRefs.current.forEach((el) => {
-      el.style.opacity = 0;
-      el.style.transform = "translateY(30px)";
-      observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, [blogs]);
+    return (
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 30 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: index * 0.2, ease: "easeOut" }}
+        className="bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 rounded-xl overflow-hidden cursor-pointer transition-transform hover:translate-y-[-5px]"
+      >
+        {children}
+      </motion.div>
+    );
+  };
 
   return (
-    <section className="py-20 ">
+    <section className="py-20 bg-gray-900/20">
       <div className="max-w-6xl mx-auto px-6">
         {/* Título */}
         <div className="text-center mb-16">
@@ -85,19 +74,10 @@ export default function Blogs() {
         {/* Grid de blogs */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {blogs.map((blog, index) => (
-            <div
-              key={blog.id}
-              ref={addToRefs}
-              data-index={index} // usado para delay individual
-              className="bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 rounded-xl overflow-hidden cursor-pointer transition-transform hover:translate-y-[-5px]"
-            >
+            <AnimatedCard key={blog.id} index={index}>
               <div className="w-full h-64 bg-[#1a0033] flex items-center justify-center overflow-hidden">
                 <img
-                  src={
-                    blog.image?.startsWith("http")
-                      ? blog.image
-                      : `http://localhost:5000/uploads/blogs/${blog.image}`
-                  }
+                  src={blog.image}
                   alt={blog.title}
                   className="w-full h-full object-cover"
                 />
@@ -108,11 +88,10 @@ export default function Blogs() {
                 </div>
                 <h3 className="text-white text-lg font-semibold mb-3">{blog.title}</h3>
                 <div className="flex items-center gap-2 text-[#a78bfa] text-sm">
-                  <i className="far fa-user"></i>
                   <span>By {blog.author}</span>
                 </div>
               </div>
-            </div>
+            </AnimatedCard>
           ))}
         </div>
       </div>

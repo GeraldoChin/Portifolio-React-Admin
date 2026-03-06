@@ -1,48 +1,25 @@
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
-const API_URL = "http://localhost:5000/api/projects";
-const UPLOADS_URL = "http://localhost:5000/uploads";
-
 export default function Works() {
-  const [projects, setProjects] = useState([]);
-  const [filters, setFilters] = useState(["All"]);
   const [activeFilter, setActiveFilter] = useState("All");
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchProjects() {
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        const completed = data.filter(p => p.status === "Concluído");
+  // 🔹 Dados estáticos dos projetos
+  const projects = [
+    { id: 1, title: "Website Portfolio", category: "Web Development", status: "Concluído", image: "project1.jpg" },
+    { id: 2, title: "E-commerce Store", category: "E-commerce", status: "Concluído", image: "project2.jpg" },
+    { id: 3, title: "Landing Page", category: "UI/UX Design", status: "Concluído", image: "project3.jpg" },
+    { id: 4, title: "SEO Audit", category: "SEO Optimization", status: "Concluído", image: "project4.jpg" },
+  ];
 
-        setProjects(completed);
-        const categories = ["All", ...new Set(completed.map(p => p.category))];
-        setFilters(categories);
-      } catch (err) {
-        console.error("Erro ao carregar projetos:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchProjects();
-  }, []);
+  // 🔹 Geração de filtros automaticamente
+  const filters = ["All", ...new Set(projects.map(p => p.category))];
 
   const filteredProjects = projects.filter(
     p => activeFilter === "All" || p.category === activeFilter
   );
 
-  if (loading) {
-    return (
-      <section className="py-20 text-center text-white/60">
-        Carregando projetos...
-      </section>
-    );
-  }
-
-  // Card individual com efeito "aparecer de baixo para cima"
+  // 🔹 Card individual
   const ProjectCard = ({ project, index }) => {
     const cardRef = useRef(null);
     const inView = useInView(cardRef, { once: true, margin: "-100px" });
@@ -61,16 +38,11 @@ export default function Works() {
       >
         <div className="w-full h-64 overflow-hidden">
           <img
-            src={
-              project.image
-                ? `${UPLOADS_URL}/${project.image}`
-                : "https://via.placeholder.com/400x250?text=No+Image"
-            }
+            src={project.image ? `/uploads/${project.image}` : "https://via.placeholder.com/400x250?text=No+Image"}
             alt={project.title}
             className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
           />
         </div>
-
         <div className="p-5">
           <h3 className="text-lg font-semibold text-white mb-2">{project.title}</h3>
           <div className="text-[#a78bfa]/70 text-sm">

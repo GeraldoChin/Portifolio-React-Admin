@@ -1,60 +1,55 @@
-import { useEffect, useState, useRef } from "react";
+import { useRef } from "react";
 import { FaStar, FaQuoteLeft } from "react-icons/fa";
+import { motion, useInView } from "framer-motion";
 
 export default function Testimonials() {
-  const [testimonials, setTestimonials] = useState([]);
-  const cardRefs = useRef([]);
-  cardRefs.current = [];
+  // 🔹 Depoimentos estáticos
+  const testimonials = [
+    {
+      id: 1,
+      name: "Alice Johnson",
+      role: "CEO",
+      company: "TechCorp",
+      avatar: "https://i.pravatar.cc/150?img=1",
+      rating: 5,
+      text: "They transformed our digital presence with an amazing web project!",
+    },
+    {
+      id: 2,
+      name: "Bob Smith",
+      role: "Project Manager",
+      company: "Startup Inc.",
+      avatar: "https://i.pravatar.cc/150?img=2",
+      rating: 4,
+      text: "Professional and reliable, highly recommended for web solutions.",
+    },
+    {
+      id: 3,
+      name: "Carla Mendes",
+      role: "Marketing Lead",
+      company: "Creative Studio",
+      avatar: "https://i.pravatar.cc/150?img=3",
+      rating: 5,
+      text: "A unique approach to web development, very creative and inspiring.",
+    },
+  ];
 
-  const addToRefs = (el) => {
-    if (el && !cardRefs.current.includes(el)) {
-      cardRefs.current.push(el);
-    }
+  const AnimatedCard = ({ children, index }) => {
+    const ref = useRef(null);
+    const inView = useInView(ref, { once: true, margin: "-50px" });
+
+    return (
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 30 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: index * 0.2, ease: "easeOut" }}
+        className="bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 rounded-xl p-8 relative"
+      >
+        {children}
+      </motion.div>
+    );
   };
-
-  const API_URL = "http://localhost:5000/api/testimonials";
-
-  useEffect(() => {
-    const fetchTestimonials = async () => {
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        setTestimonials(data);
-      } catch (err) {
-        console.error("Erro ao carregar depoimentos", err);
-      }
-    };
-    fetchTestimonials();
-  }, []);
-
-  useEffect(() => {
-    if (!cardRefs.current) return;
-
-    const observerOptions = {
-      threshold: 0.2,
-      rootMargin: "0px 0px -50px 0px",
-    };
-
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Faz o card aparecer
-          entry.target.style.opacity = 1;
-          entry.target.style.transform = "translateY(0)";
-          entry.target.style.transition = `all 0.6s ease-out ${entry.target.dataset.index * 0.2}s`;
-          obs.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    cardRefs.current.forEach((el) => {
-      el.style.opacity = 0;
-      el.style.transform = "translateY(30px)";
-      observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, [testimonials]);
 
   return (
     <section className="py-20 bg-gray-900/20">
@@ -72,21 +67,12 @@ export default function Testimonials() {
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {testimonials.map((t, index) => (
-            <div
-              key={t.id}
-              ref={addToRefs}
-              data-index={index} // usado para delay individual
-              className="bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 rounded-xl p-8 relative"
-            >
+            <AnimatedCard key={t.id} index={index}>
               <FaQuoteLeft className="absolute top-4 right-4 text-[#a78bfa]/20 text-3xl" />
 
               <div className="flex items-center gap-4 mb-4">
                 <img
-                  src={
-                    t.avatar
-                      ? `http://localhost:5000${t.avatar}`
-                      : "https://i.pravatar.cc/150"
-                  }
+                  src={t.avatar}
                   alt={t.name}
                   className="w-14 h-14 rounded-full object-cover border-2 border-[#a78bfa]"
                 />
@@ -108,7 +94,7 @@ export default function Testimonials() {
               </div>
 
               <p className="text-[#b8a9d8] text-sm leading-relaxed">“{t.text}”</p>
-            </div>
+            </AnimatedCard>
           ))}
         </div>
       </div>

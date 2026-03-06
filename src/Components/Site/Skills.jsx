@@ -1,28 +1,23 @@
-import { useState, useEffect, useRef } from "react";
-import { FaQuestionCircle } from "react-icons/fa";
-import * as FaIcons from "react-icons/fa";
-import * as SiIcons from "react-icons/si";
+import { useRef } from "react";
+import { FaQuestionCircle, FaReact, FaHtml5, FaCss3Alt, FaNodeJs } from "react-icons/fa";
+import { SiTailwindcss, SiJavascript, SiTypescript } from "react-icons/si";
 import { motion, useInView } from "framer-motion";
 
-const Icons = { ...FaIcons, ...SiIcons };
+const Icons = { FaReact, FaHtml5, FaCss3Alt, FaNodeJs, SiTailwindcss, SiJavascript, SiTypescript };
 
 export default function Skills() {
-  const [skills, setSkills] = useState([]);
-  const API_URL = "http://localhost:5000/api/skills";
+  // 🔹 Dados estáticos das skills
+  const skills = [
+    { name: "React", icon: "FaReact", percent: 90 },
+    { name: "HTML5", icon: "FaHtml5", percent: 95 },
+    { name: "CSS3", icon: "FaCss3Alt", percent: 90 },
+    { name: "TailwindCSS", icon: "SiTailwindcss", percent: 85 },
+    { name: "JavaScript", icon: "SiJavascript", percent: 90 },
+    { name: "TypeScript", icon: "SiTypescript", percent: 80 },
+    { name: "Node.js", icon: "FaNodeJs", percent: 70 },
+  ];
 
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        setSkills(data);
-      } catch (err) {
-        console.error("Erro ao buscar skills:", err);
-      }
-    };
-    fetchSkills();
-  }, []);
-
+  // 🔹 Função para renderizar ícones
   const renderIcon = (iconName) => {
     const IconComponent = Icons[iconName];
     return IconComponent ? (
@@ -32,6 +27,7 @@ export default function Skills() {
     );
   };
 
+  // 🔹 Card animado
   const AnimatedSkillCard = ({ children, index }) => {
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-50px" });
@@ -43,7 +39,7 @@ export default function Skills() {
         animate={inView ? { opacity: 1, x: 0 } : {}}
         transition={{
           duration: 0.6,
-          delay: index * 0.5, // aumenta o delay para um de cada vez
+          delay: index * 0.2,
           ease: "easeOut",
         }}
         className="text-center"
@@ -54,7 +50,7 @@ export default function Skills() {
   };
 
   return (
-    <section id="skills" className="py-20">
+    <section id="skills" className="py-20 bg-gray-900/20">
       <div className="max-w-6xl mx-auto px-6">
         {/* Título */}
         <div className="text-center mb-16">
