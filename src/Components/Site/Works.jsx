@@ -6,7 +6,7 @@ export default function Works() {
 
   // 🔹 Dados estáticos dos projetos
   const projects = [
-    { id: 1, title: "Website Portfolio", category: "Web Development", status: "Concluído", image: "project1.jpg" },
+    { id: 1, title: "Mobile App", category: "Mobile", status: "Concluído", image: "mobile.png" },
     { id: 2, title: "E-commerce Store", category: "E-commerce", status: "Concluído", image: "project2.jpg" },
     { id: 3, title: "Landing Page", category: "UI/UX Design", status: "Concluído", image: "project3.jpg" },
     { id: 4, title: "SEO Audit", category: "SEO Optimization", status: "Concluído", image: "project4.jpg" },
@@ -24,6 +24,11 @@ export default function Works() {
     const cardRef = useRef(null);
     const inView = useInView(cardRef, { once: true, margin: "-100px" });
 
+    // Caminho da imagem usando a pasta public/assets
+    const imageSrc = project.image
+      ? `/assets/${project.image}`           // busca na pasta public/assets
+      : `/assets/placeholder.jpg`;           // fallback local
+
     return (
       <motion.div
         ref={cardRef}
@@ -38,7 +43,7 @@ export default function Works() {
       >
         <div className="w-full h-64 overflow-hidden">
           <img
-            src={project.image ? `/uploads/${project.image}` : "https://via.placeholder.com/400x250?text=No+Image"}
+            src={imageSrc}
             alt={project.title}
             className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
           />

@@ -1,12 +1,22 @@
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 import { FaGithub, FaLinkedin, FaEnvelope, FaDownload } from "react-icons/fa";
 
 export default function Hero() {
-  // Motion values para o efeito de seguir o mouse
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const rotateX = useTransform(y, [-100, 100], [15, -15]);
-  const rotateY = useTransform(x, [-100, 100], [-15, 15]);
+
+  // Spring suave — sem bounce, resposta lenta e elegante
+  const springConfig = { stiffness: 60, damping: 20, mass: 1 };
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
+
+  // Rotação muito subtil — apenas 6 graus máximo
+  const rotateX = useTransform(springY, [-120, 120], [6, -6]);
+  const rotateY = useTransform(springX, [-120, 120], [-6, 6]);
+
+  // Paralaxe leve no glow — move na direcção oposta
+  const glowX = useTransform(springX, [-120, 120], [12, -12]);
+  const glowY = useTransform(springY, [-120, 120], [12, -12]);
 
   return (
     <section
@@ -14,12 +24,13 @@ export default function Hero() {
       className="relative min-h-screen flex items-center overflow-hidden px-4 sm:px-8 md:px-12 py-20 sm:py-28 md:py-36"
     >
       {/* Manchas roxas */}
-      <div className="absolute top-1/2 left-[-10%] md:left-[80%] w-72 md:w-96 h-72 md:h-96 bg-purple-400/10 rounded-full filter blur-3xl animate-pulse-slow"></div>
-      <div className="absolute bottom-[25%] right-0 md:right-[-50px] w-52 md:w-64 h-52 md:h-64 bg-purple-600/20 rounded-full filter blur-2xl animate-pulse-slow"></div>
-      <div className="absolute top-[30%] right-[5%] md:right-[10%] w-40 md:w-52 h-40 md:h-52 bg-purple-300/10 rounded-full filter blur-2xl animate-pulse-slow"></div>
-      <div className="absolute bottom-[5%] left-[5%] md:left-[20%] w-60 md:w-72 h-60 md:h-72 bg-purple-500/15 rounded-full filter blur-3xl animate-pulse-slow"></div>
+      <div className="absolute top-1/2 left-[-10%] md:left-[80%] w-72 md:w-96 h-72 md:h-96 bg-purple-400/10 rounded-full filter blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-[25%] right-0 md:right-[-50px] w-52 md:w-64 h-52 md:h-64 bg-purple-600/20 rounded-full filter blur-2xl animate-pulse"></div>
+      <div className="absolute top-[30%] right-[5%] md:right-[10%] w-40 md:w-52 h-40 md:h-52 bg-purple-300/10 rounded-full filter blur-2xl animate-pulse"></div>
+      <div className="absolute bottom-[5%] left-[5%] md:left-[20%] w-60 md:w-72 h-60 md:h-72 bg-purple-500/15 rounded-full filter blur-3xl animate-pulse"></div>
 
       <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col md:flex-row items-center gap-y-12 md:gap-y-0 gap-x-8">
+
         {/* TEXTO */}
         <div className="flex-1 min-w-0 text-center md:text-left">
           <motion.h2
@@ -52,14 +63,12 @@ export default function Hero() {
             galley of type and scrambled it.
           </motion.p>
 
-          {/* BOTÃO + REDES SOCIAIS */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-wrap justify-center md:justify-start items-center gap-4"
           >
-            {/* Botão Download CV */}
             <motion.a
               whileHover={{ scale: 1.05 }}
               href="#"
@@ -69,7 +78,6 @@ export default function Hero() {
               Download CV
             </motion.a>
 
-            {/* Redes sociais com borda individual */}
             <div className="flex gap-3 justify-center md:justify-start">
               {[FaGithub, FaLinkedin, FaEnvelope].map((Icon, i) => (
                 <motion.a
@@ -86,38 +94,59 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* IMAGEM ORIGINAL COM EFEITO DE SEGUIR O MOUSE */}
+        {/* IMAGEM */}
         <motion.div
           initial={{ opacity: 0, x: 60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
           className="flex-1 flex justify-center min-w-0 w-full max-w-[400px] sm:max-w-[450px] mt-8 md:mt-0"
         >
+          {/* Perspective wrapper — necessário para o 3D funcionar correctamente */}
           <div
             className="relative w-full"
+            style={{ perspective: "1000px" }}
             onMouseMove={(e) => {
               const rect = e.currentTarget.getBoundingClientRect();
-              const posX = e.clientX - rect.left - rect.width / 2;
-              const posY = e.clientY - rect.top - rect.height / 2;
-              x.set(posX);
-              y.set(posY);
+              x.set(e.clientX - rect.left - rect.width  / 2);
+              y.set(e.clientY - rect.top  - rect.height / 2);
             }}
             onMouseLeave={() => {
               x.set(0);
               y.set(0);
             }}
           >
-            {/* Glow atrás da foto */}
-            <div className="absolute inset-0 bg-purple-500/20 rounded-2xl blur-3xl animate-pulse-slow"></div>
+            {/* Glow que se move em paralaxe */}
+            <motion.div
+              className="absolute inset-0 bg-purple-500/20 rounded-2xl blur-3xl"
+              style={{ x: glowX, y: glowY }}
+            />
 
+            {/* Imagem com rotação 3D suave — SEM hover:scale que conflitua */}
             <motion.img
               src="/img/img.jpg"
               alt="Geraldo Chin"
-              className="relative w-full rounded-2xl shadow-2xl border border-purple-500/20 object-cover transition-transform duration-500 hover:scale-105"
-              style={{ rotateX, rotateY }}
+              className="relative w-full rounded-2xl shadow-2xl border border-purple-500/20 object-cover"
+              style={{
+                rotateX,
+                rotateY,
+                transformStyle: "preserve-3d",
+              }}
+            />
+
+            {/* Reflexo de luz que segue o rato */}
+            <motion.div
+              className="absolute inset-0 rounded-2xl pointer-events-none"
+              style={{
+                background: useTransform(
+                  [springX, springY],
+                  ([lx, ly]) =>
+                    `radial-gradient(circle at ${50 + (lx / 120) * 30}% ${50 + (ly / 120) * 30}%, rgba(167,139,250,0.08) 0%, transparent 65%)`
+                ),
+              }}
             />
           </div>
         </motion.div>
+
       </div>
     </section>
   );
