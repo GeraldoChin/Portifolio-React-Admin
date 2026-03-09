@@ -1,52 +1,47 @@
 import { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import {
-  FaCode,
-  FaPencilRuler,
-  FaSearch,
-  FaShoppingCart,
-  FaArrowRight,
-  FaCheck,
-} from "react-icons/fa";
+import { FaCode, FaPencilRuler, FaSearch, FaShoppingCart, FaArrowRight, FaCheck, FaMobileAlt } from "react-icons/fa";
+
 
 const services = [
   {
-    number:   "01",
-    icon:     <FaCode />,
-    title:    "Web Development",
-    short:    "Websites modernos, rápidos e escaláveis.",
-    desc:     "Desenvolvimento de aplicações web completas utilizando React, Next.js e Node.js. Foco em performance, acessibilidade e boas práticas de código.",
-    features: ["React / Next.js", "Node.js & APIs REST", "Responsive Design", "Deploy & CI/CD"],
-    accent:   "#a78bfa",
+    number: "01",
+    icon: <FaCode />,
+    title: "Web Development",
+    short: "Websites modernos, rápidos e escaláveis.",
+    desc: "Desenvolvimento de aplicações web completas utilizando React, Tailwind CSS e Node.js. Foco em performance, acessibilidade e boas práticas de código.",
+    features: ["React/Tailwind CSS", "Node.js & APIs REST", "Responsive Design"], // corrigido
+    accent: "#a78bfa",
   },
   {
-    number:   "02",
-    icon:     <FaPencilRuler />,
-    title:    "UI/UX Design",
-    short:    "Interfaces intuitivas centradas no utilizador.",
-    desc:     "Design de interfaces elegantes com foco na experiência do utilizador. Desde wireframes e protótipos até ao handoff para desenvolvimento.",
+    number: "02",
+    icon: <FaPencilRuler />,
+    title: "UI/UX Design",
+    short: "Interfaces intuitivas centradas no utilizador.",
+    desc: "Design de interfaces elegantes com foco na experiência do utilizador. Desde wireframes e protótipos até ao handoff para desenvolvimento.",
     features: ["Figma Prototyping", "Design Systems", "User Research", "Usability Testing"],
-    accent:   "#c084fc",
+    accent: "#c084fc",
   },
   {
-    number:   "03",
-    icon:     <FaSearch />,
-    title:    "SEO Optimization",
-    short:    "Visibilidade real nos motores de busca.",
-    desc:     "Auditoria técnica completa, optimização de performance e estratégia de conteúdo para melhorar o posicionamento orgânico do teu site.",
-    features: ["Auditoria Técnica", "Core Web Vitals", "Keyword Strategy", "Analytics & Reports"],
-    accent:   "#818cf8",
+    number: "03",
+    icon: <FaMobileAlt />, // ícone para mobile
+    title: "React Native App Development",
+    short: "Aplicações móveis nativas e híbridas com React Native.",
+    desc: "Desenvolvimento de apps iOS e Android utilizando React Native, com foco em performance, UI/UX intuitiva e integração com APIs e serviços externos.",
+    features: ["React Native", "iOS & Android", "API Integration", "Responsive & Smooth UX"],
+    accent: "#34d399",
   },
   {
-    number:   "04",
-    icon:     <FaShoppingCart />,
-    title:    "E-commerce Solutions",
-    short:    "Lojas online que convertem visitantes em clientes.",
-    desc:     "Criação de lojas online com experiência de compra fluida, integração de pagamentos e gestão de inventário simplificada.",
+    number: "04",
+    icon: <FaShoppingCart />,
+    title: "E-commerce Solutions",
+    short: "Lojas online que convertem visitantes em clientes.",
+    desc: "Criação de lojas online com experiência de compra fluida, integração de pagamentos e gestão de inventário simplificada.",
     features: ["Shopify / WooCommerce", "Payment Gateways", "Product Management", "Conversion Optimisation"],
-    accent:   "#e879f9",
+    accent: "#e879f9",
   },
 ];
+
 
 function ServiceCard({ service, index, isActive, onClick }) {
   const ref    = useRef(null);
