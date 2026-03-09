@@ -52,7 +52,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="py-20 bg-gray-900/20">
+    <section className="py-20 bg-[#0f0a1a]">
       <div className="max-w-6xl mx-auto px-6">
         {/* Título */}
         <div className="text-center mb-16">

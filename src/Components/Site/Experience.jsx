@@ -55,7 +55,7 @@ export default function Resume() {
   const rows  = Array.from({ length: count }, (_, i) => i);
 
   return (
-    <section id="resume" className="py-20 bg-gray-900/20">
+    <section id="resume" className="py-20 bg-[#0d0b14] ">
       <div className="max-w-6xl mx-auto px-6">
 
         {/* ── Headers ── */}
