@@ -62,7 +62,7 @@ export default function Dashboard() {
             <div className="text-3xl text-[#a78bfa]">{stat.icon}</div>
           </div>
         ))}
-      </div>
+      </div> 
 
       {/* Conteúdo inferior */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

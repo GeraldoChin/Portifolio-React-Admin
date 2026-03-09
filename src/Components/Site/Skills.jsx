@@ -13,7 +13,7 @@ export default function Skills() {
     { name: "CSS3", icon: "FaCss3Alt", percent: 90 },
     { name: "TailwindCSS", icon: "SiTailwindcss", percent: 85 },
     { name: "JavaScript", icon: "SiJavascript", percent: 90 },
-    { name: "TypeScript", icon: "SiTypescript", percent: 80 },
+    // { name: "TypeScript", icon: "SiTypescript", percent: 80 },
     { name: "Node.js", icon: "FaNodeJs", percent: 70 },
   ];
 

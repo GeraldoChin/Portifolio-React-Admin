@@ -97,7 +97,7 @@ export default function Navbar() {
               <li>
                 <button
                   onClick={() => navigate("/hireme")}
-                  className="bg-gradient-to-r from-purple-600 to-purple-400 hover:opacity-90 text-white font-bold px-6 py-2 rounded-full transition"
+                  className="flex-shrink-0 flex items-center gap-2 bg-gradient-to-r from-[#a78bfa] to-[#6b3ff0] hover:opacity-90 px-6 py-3 rounded-full font-semibold text-sm transition-all hover:shadow-[0_0_24px_rgba(167,139,250,0.4)] self-start sm:self-auto"
                 >
                   Hire Me
                 </button>
