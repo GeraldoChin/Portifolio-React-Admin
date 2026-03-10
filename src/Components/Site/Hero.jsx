@@ -5,18 +5,12 @@ export default function Hero() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Spring suave — sem bounce, resposta lenta e elegante
   const springConfig = { stiffness: 60, damping: 20, mass: 1 };
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
 
-  // Rotação muito subtil — apenas 6 graus máximo
-  const rotateX = useTransform(springY, [-120, 120], [6, -6]);
-  const rotateY = useTransform(springX, [-120, 120], [-6, 6]);
-
-  // Paralaxe leve no glow — move na direcção oposta
-  const glowX = useTransform(springX, [-120, 120], [12, -12]);
-  const glowY = useTransform(springY, [-120, 120], [12, -12]);
+  const rotateX = useTransform(springY, [-80, 80], [12, -12]);
+  const rotateY = useTransform(springX, [-80, 80], [-12, 12]);
 
   return (
     <section
@@ -24,20 +18,21 @@ export default function Hero() {
       className="relative min-h-screen flex items-center overflow-hidden px-4 sm:px-8 md:px-12 py-20 sm:py-28 md:py-36"
     >
       {/* Manchas roxas */}
-      <div className="absolute top-1/2 left-[-10%] md:left-[80%] w-72 md:w-96 h-72 md:h-96 bg-purple-400/10 rounded-full filter blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-[25%] right-0 md:right-[-50px] w-52 md:w-64 h-52 md:h-64 bg-purple-600/20 rounded-full filter blur-2xl animate-pulse"></div>
-      <div className="absolute top-[30%] right-[5%] md:right-[10%] w-40 md:w-52 h-40 md:h-52 bg-purple-300/10 rounded-full filter blur-2xl animate-pulse"></div>
-      <div className="absolute bottom-[5%] left-[5%] md:left-[20%] w-60 md:w-72 h-60 md:h-72 bg-purple-500/15 rounded-full filter blur-3xl animate-pulse"></div>
+      <div className="absolute top-1/2 left-[-10%] sm:left-[-5%] md:left-[80%] w-48 sm:w-72 md:w-96 h-48 sm:h-72 md:h-96 bg-purple-400/10 rounded-full filter blur-3xl animate-pulse pointer-events-none" />
+      <div className="absolute bottom-[20%] right-[-20px] sm:right-0 md:right-[-50px] w-40 sm:w-52 md:w-64 h-40 sm:h-52 md:h-64 bg-purple-600/20 rounded-full filter blur-2xl animate-pulse pointer-events-none" />
+      <div className="absolute top-[30%] right-[5%] md:right-[10%] w-28 sm:w-40 md:w-52 h-28 sm:h-40 md:h-52 bg-purple-300/10 rounded-full filter blur-2xl animate-pulse pointer-events-none" />
+      <div className="absolute bottom-[5%] left-[5%] md:left-[20%] w-44 sm:w-60 md:w-72 h-44 sm:h-60 md:h-72 bg-purple-500/15 rounded-full filter blur-3xl animate-pulse pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col md:flex-row items-center gap-y-12 md:gap-y-0 gap-x-8">
+      <div className="max-w-6xl mx-auto w-full relative z-10 flex flex-col md:flex-row items-center gap-y-10 sm:gap-y-12 md:gap-y-0 md:gap-x-8 lg:gap-x-16">
 
-        {/* TEXTO */}
-        <div className="flex-1 min-w-0 text-center md:text-left">
+        {/* ── TEXTO — flex-[3] para ocupar mais espaço que a imagem ── */}
+        <div className="flex-[3] min-w-0 text-center md:text-left order-2 md:order-1">
+
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-[#a78bfa] text-xl sm:text-2xl mb-2 truncate"
+            className="text-[#a78bfa] text-lg sm:text-xl md:text-2xl mb-2"
           >
             I am Geraldo Chin
           </motion.h2>
@@ -46,16 +41,23 @@ export default function Hero() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-3xl sm:text-5xl md:text-[80px] font-bold leading-tight mb-6 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent w-full md:w-2xl break-words"
+            className="
+              text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[72px]
+              font-bold leading-[1.15] mb-5 sm:mb-6
+              bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent
+            "
           >
-            Web Developer + UX Designer
+            Web Developer +<br /> UX Designer
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-purple-200 leading-relaxed mb-8 max-w-full sm:max-w-lg mx-auto md:mx-0"
+            className="
+              text-purple-200 text-sm sm:text-base leading-relaxed mb-7 sm:mb-8
+              max-w-full mx-auto md:mx-0
+            "
           >
             I help you build brand for your business at an affordable price.
             Thousands of clients have procured exceptional results while
@@ -67,25 +69,35 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-wrap justify-center md:justify-start items-center gap-4"
+            className="flex flex-wrap justify-center md:justify-start items-center gap-3 sm:gap-4"
           >
             <motion.a
               whileHover={{ scale: 1.05 }}
               href="#"
-              className="inline-flex items-center gap-2 px-6 py-3 md:px-8 md:py-4 rounded-full border border-purple-900 text-white font-semibold hover:bg-purple-500 hover:border-purple-500 transition"
+              className="
+                inline-flex items-center gap-2
+                px-5 py-3 sm:px-6 sm:py-3 md:px-8 md:py-4
+                rounded-full border border-purple-900
+                text-white text-sm sm:text-base font-semibold
+                hover:bg-purple-500 hover:border-purple-500 transition
+              "
             >
               <FaDownload />
               Download CV
             </motion.a>
 
-            <div className="flex gap-3 justify-center md:justify-start">
+            <div className="flex gap-2 sm:gap-3 justify-center md:justify-start">
               {[FaGithub, FaLinkedin, FaEnvelope].map((Icon, i) => (
                 <motion.a
                   key={i}
                   href="#"
                   whileHover={{ scale: 1.2, color: "#a78bfa" }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className="p-3 rounded-full border border-purple-900 text-white text-2xl hover:border-purple-500 transition"
+                  className="
+                    p-2.5 sm:p-3 rounded-full border border-purple-900
+                    text-white text-xl sm:text-2xl
+                    hover:border-purple-500 transition
+                  "
                 >
                   <Icon />
                 </motion.a>
@@ -94,56 +106,53 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* IMAGEM */}
+        {/* ── IMAGEM CIRCULAR — flex-[2] para ceder espaço ao texto ── */}
         <motion.div
           initial={{ opacity: 0, x: 60 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex-1 flex justify-center min-w-0 w-full max-w-[400px] sm:max-w-[450px] mt-8 md:mt-0"
+          transition={{ duration: 0.9, delay: 0.3 }}
+          className="flex-[2] flex-shrink-0 flex justify-center order-1 md:order-2"
         >
-          {/* Perspective wrapper — necessário para o 3D funcionar correctamente */}
           <div
-            className="relative w-full"
-            style={{ perspective: "1000px" }}
+            className="relative"
             onMouseMove={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              x.set(e.clientX - rect.left - rect.width  / 2);
-              y.set(e.clientY - rect.top  - rect.height / 2);
+              const r = e.currentTarget.getBoundingClientRect();
+              x.set(e.clientX - r.left - r.width  / 2);
+              y.set(e.clientY - r.top  - r.height / 2);
             }}
-            onMouseLeave={() => {
-              x.set(0);
-              y.set(0);
-            }}
+            onMouseLeave={() => { x.set(0); y.set(0); }}
           >
-            {/* Glow que se move em paralaxe */}
-            <motion.div
-              className="absolute inset-0 bg-purple-500/20 rounded-2xl blur-3xl"
-              style={{ x: glowX, y: glowY }}
-            />
+            {/* Glow externo pulsante */}
+            <div className="absolute -inset-4 bg-purple-500/15 rounded-full blur-2xl animate-pulse pointer-events-none" />
 
-            {/* Imagem com rotação 3D suave — SEM hover:scale que conflitua */}
+            {/* Anel decorativo */}
+            <div className="absolute -inset-1 rounded-full border border-purple-500/30 pointer-events-none" />
+
+            {/* Foto circular com tilt 3D suave */}
             <motion.img
               src="/img/img.jpg"
               alt="Geraldo Chin"
-              className="relative w-full rounded-2xl shadow-2xl border border-purple-500/20 object-cover"
-              style={{
-                rotateX,
-                rotateY,
-                transformStyle: "preserve-3d",
-              }}
+              style={{ rotateX, rotateY }}
+              className="
+                relative
+                w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80
+                object-cover rounded-full
+                border-2 border-purple-500/60
+                shadow-[0_0_48px_rgba(168,85,247,0.35)]
+                transition-transform duration-300
+              "
             />
 
-            {/* Reflexo de luz que segue o rato */}
+            {/* Badge "Disponível" */}
             <motion.div
-              className="absolute inset-0 rounded-2xl pointer-events-none"
-              style={{
-                background: useTransform(
-                  [springX, springY],
-                  ([lx, ly]) =>
-                    `radial-gradient(circle at ${50 + (lx / 120) * 30}% ${50 + (ly / 120) * 30}%, rgba(167,139,250,0.08) 0%, transparent 65%)`
-                ),
-              }}
-            />
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1, duration: 0.5 }}
+              className="absolute -bottom-2 -right-2 flex items-center gap-2 bg-gray-900 border border-purple-800 rounded-full px-3 py-1.5 text-xs font-medium text-purple-300 shadow-lg"
+            >
+              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+              Disponível
+            </motion.div>
           </div>
         </motion.div>
 
