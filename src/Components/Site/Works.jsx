@@ -7,9 +7,9 @@ export default function Works() {
   // 🔹 Dados estáticos dos projetos
   const projects = [
     { id: 1, title: "Mobile App", category: "Mobile", status: "Concluído", image: "mobile.png" },
-    { id: 2, title: "E-commerce Store", category: "E-commerce", status: "Concluído", image: "project2.jpg" },
-    { id: 3, title: "Landing Page", category: "UI/UX Design", status: "Concluído", image: "project3.jpg" },
-    { id: 4, title: "SEO Audit", category: "SEO Optimization", status: "Concluído", image: "project4.jpg" },
+    { id: 2, title: "E-commerce Store", category: "E-commerce", status: "Concluído", image: "e-comerce.png" },
+    { id: 3, title: "Admin Dashboard", category: "UI/UX Design", status: "Concluído", image: "Admin.png" },
+    { id: 4, title: "SEO Audit", category: "SEO Optimization", status: "Concluído", image: "devclub.png" },
   ];
 
   // 🔹 Geração de filtros automaticamente

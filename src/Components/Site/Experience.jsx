@@ -1,36 +1,50 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-
 const experienceData = [
   {
     id: 1,
-    period: "2022 - Present",
-    title: "Front-End Developer",
-    company: "Tech Company Inc.",
-    description: "Developing responsive web applications using React and TailwindCSS."
+    period: "Jan 2026 - Present",
+    title: "Freelance Web Developer",
+    company: "Autônomo",
+    description:
+      "Desenvolvimento de websites e landing pages responsivas utilizando HTML, CSS, JavaScript, Tailwind CSS e React. Integração com APIs REST e versionamento com Git/GitHub."
   },
   {
     id: 2,
-    period: "2020 - 2022",
-    title: "Junior Developer",
-    company: "Startup XYZ",
-    description: "Worked on full-stack development projects with Node.js and MongoDB."
+    period: "Dec 2025 - Jan 2026",
+    title: "Web Developer",
+    company: "Universidade Zambeze (CETIC)",
+    description:
+      "Desenvolvimento de site acadêmico para apoio às atividades institucionais e colaboração com equipe técnica no levantamento de requisitos."
   },
+  {
+    id: 3,
+    period: "Feb 2023 - Jan 2026",
+    title: "Projetos Acadêmicos",
+    company: "Engenharia Informática",
+    description:
+      "Desenvolvimento de sistemas acadêmicos, incluindo sistema de cobrança de taxas diárias, uso de Git/GitHub e colaboração em projetos."
+  }
 ];
-
 const educationData = [
   {
     id: 1,
-    period: "2017 - 2020",
-    course: "BSc in Computer Science",
-    institution: "University of Example"
+    period: "Jan 2026 - (Em curso)",
+    course: "Licenciatura em Engenharia Informática",
+    institution: "Universidade Zambeze (UniZambeze)"
   },
   {
     id: 2,
-    period: "2015 - 2017",
-    course: "High School Diploma",
-    institution: "Example High School"
+    period: "2023 - 2026",
+    course: "Desenvolvimento Web",
+    institution: "Universidade Zambeze (CETIC)"
   },
+  {
+    id: 3,
+    period: "2023 - 2024",
+    course: "HTML, CSS & Git/GitHub",
+    institution: "Curso em Vídeo & Thiago Matos (YouTube)",
+  }
 ];
 
 function AnimatedCard({ children, index, col }) {
