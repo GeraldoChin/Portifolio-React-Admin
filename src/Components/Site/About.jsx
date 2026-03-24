@@ -28,11 +28,11 @@ const stagger = {
 
 /* ── Data ── */
 const skills = [
-  { label: "React & Next.js",     level: 92 },
-  { label: "Node.js & Express",   level: 88 },
-  { label: "MySQL / PostgreSQL",  level: 80 },
-  { label: "Tailwind CSS",        level: 95 },
-  { label: "Docker & DevOps",     level: 70 },
+  { label: "React & React Native",     level: 55 },
+  { label: "Node.js & Express",   level: 45 },
+  { label: "MySQL / PostgreSQL",  level: 45 },
+  { label: "Tailwind CSS",        level: 75 },
+  { label: "Git & Git Hub",     level: 70 },
 ];
 
 const cards = [
@@ -55,11 +55,11 @@ const cards = [
 
 const timeline = [
   { icon: <FaBriefcase />,    year: "2023 — Atual",  title: "Fullstack Developer",    place: "Freelance" },
-  { icon: <FaBriefcase />,    year: "2022 — 2023",   title: "Frontend Developer",     place: "Startup XYZ" },
-  { icon: <FaGraduationCap />,year: "2019 — 2022",   title: "Engenharia Informática", place: "Universidade ABC" },
+  { icon: <FaBriefcase />,    year: "2024 — 2025",   title: "Frontend Developer",     place: "Startup XYZ" },
+  { icon: <FaGraduationCap />,year: "2023 — em curso",   title: "Engenharia Informática", place: "Universidade ABC" },
 ];
 
-const techBadges = ["React","Next.js","Node.js","TypeScript","TailwindCSS","MySQL","PostgreSQL","Docker","Git","REST APIs","Figma","Linux"];
+const techBadges = ["React","React Native","Node.js","TailwindCSS","MySQL","Git","REST APIs","Figma"];
 
 export default function AboutPage() {
   /* mouse-tilt para a foto */

@@ -8,13 +8,13 @@ const Icons = { FaReact, FaHtml5, FaCss3Alt, FaNodeJs, SiTailwindcss, SiJavascri
 export default function Skills() {
   // 🔹 Dados estáticos das skills
   const skills = [
-    { name: "React", icon: "FaReact", percent: 90 },
-    { name: "HTML5", icon: "FaHtml5", percent: 95 },
-    { name: "CSS3", icon: "FaCss3Alt", percent: 90 },
+    { name: "React", icon: "FaReact", percent: 50 },
+    { name: "HTML5", icon: "FaHtml5", percent: 85 },
+    { name: "CSS3", icon: "FaCss3Alt", percent: 65 },
     { name: "TailwindCSS", icon: "SiTailwindcss", percent: 85 },
-    { name: "JavaScript", icon: "SiJavascript", percent: 90 },
+    { name: "JavaScript", icon: "SiJavascript", percent: 40 },
     // { name: "TypeScript", icon: "SiTypescript", percent: 80 },
-    { name: "Node.js", icon: "FaNodeJs", percent: 70 },
+    { name: "Node.js", icon: "FaNodeJs", percent: 40 },
   ];
 
   // 🔹 Função para renderizar ícones

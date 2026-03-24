@@ -18,46 +18,49 @@ const fadeUp = {
   show:   { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
 };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.11 } } };
-
 const experience = [
   {
-    role:    "Fullstack Developer",
-    company: "Freelance",
-    period:  "2023 — Atual",
-    type:    "Remoto",
-    desc:    "Desenvolvimento de aplicações web completas para clientes de diferentes sectores. Gestão de projetos do levantamento de requisitos ao deploy em produção.",
-    tags:    ["React", "Node.js", "MySQL", "TailwindCSS"],
-  },
-  {
     role:    "Frontend Developer",
-    company: "Startup XYZ",
-    period:  "2022 — 2023",
-    type:    "Híbrido",
-    desc:    "Responsável pela construção do design system e implementação de interfaces responsivas. Colaboração directa com a equipa de produto e UX.",
-    tags:    ["React", "TypeScript", "Figma", "CSS Modules"],
+    company: "Freelance",
+    period:  "2026 — Atual",
+    type:    "Remoto",
+    desc:    "Desenvolvimento de websites e landing pages responsivas utilizando React, Tailwind CSS e JavaScript. Integração com APIs REST e versionamento com Git/GitHub.",
+    tags:    ["React", "JavaScript", "TailwindCSS", "Git"],
   },
   {
-    role:    "Junior Web Developer",
-    company: "Agência ABC",
-    period:  "2021 — 2022",
+    role:    "Web Developer",
+    company: "Universidade Zambeze (CETIC)",
+    period:  "Dec 2025 — Jan 2026",
     type:    "Presencial",
-    desc:    "Desenvolvimento de landing pages e e-commerces para pequenas e médias empresas. Manutenção de sistemas legados em PHP e WordPress.",
-    tags:    ["HTML/CSS", "JavaScript", "PHP", "WordPress"],
+    desc:    "Desenvolvimento de site académico para apoio institucional, incluindo levantamento de requisitos e colaboração com equipa técnica.",
+    tags:    ["HTML", "CSS", "JavaScript", "React", "TailwindCSS", "Git", "GitHub"],
   },
-];
-
-const education = [
+  {
+    role:    "Student Developer",
+    company: "Projetos Acadêmicos",
+    period:  "2023 — 2026",
+    type:    "Acadêmico",
+    desc:    "Desenvolvimento de projetos como sistema de cobrança de taxas diárias, com versionamento em Git/GitHub e aplicação de conceitos de engenharia de software.",
+    tags:    ["JavaScript", "Git", "MySQL", "Node.js", "Express", "React", "TailwindCSS"],
+  },
+];const education = [
   {
     degree: "Licenciatura em Engenharia Informática",
-    school: "Universidade ABC",
-    period: "2019 — 2022",
-    desc:   "Especialização em Engenharia de Software. Trabalho final sobre arquitecturas de microsserviços com Node.js.",
+    school: "Universidade Zambeze (UniZambeze)",
+    period: "2026 — (Em curso)",
+    desc:   "Formação em desenvolvimento de software, engenharia de sistemas e trabalho em equipe com foco em aplicações web.",
   },
   {
-    degree: "Curso de UX/UI Design",
-    school: "Plataforma Online XYZ",
-    period: "2022",
-    desc:   "Fundamentos de design centrado no utilizador, prototipagem em Figma e testes de usabilidade.",
+    degree: "Desenvolvimento Web",
+    school: "Universidade Zambeze (CETIC)",
+    period: "2023 — 2026",
+    desc:   "Aprendizagem prática em desenvolvimento de websites, integração de APIs e versionamento com Git.",
+  },
+  {
+    degree: "Front-End Development (React & JavaScript)",
+    school: "Formação Autodidata & Cursos Online",
+    period: "2024 — 2025",
+    desc:   "Estudo de React.js, JavaScript moderno (ES6+) e construção de interfaces responsivas com Tailwind CSS.",
   },
 ];
 
@@ -65,31 +68,30 @@ const skillGroups = [
   {
     icon:   <FaCode />,
     label:  "Frontend",
-    skills: ["React", "Next.js", "TypeScript", "TailwindCSS", "Framer Motion", "HTML/CSS"],
+    skills: ["React", "JavaScript (ES6+)", "TailwindCSS", "HTML5", "CSS3"],
   },
   {
     icon:   <FaServer />,
-    label:  "Backend",
-    skills: ["Node.js", "Express", "REST APIs", "GraphQL", "MySQL", "PostgreSQL"],
+    label:  "Backend (Básico)",
+    skills: ["Node.js", "MySQL", "REST APIs"],
   },
   {
     icon:   <FaPalette />,
-    label:  "Design & UI",
-    skills: ["Figma", "Design Systems", "Responsive Design", "Acessibilidade"],
+    label:  "UI & Web Design",
+    skills: ["Responsive Design", "UI Básico", "Componentização"],
   },
   {
     icon:   <FaTools />,
-    label:  "DevOps & Tools",
-    skills: ["Docker", "Git & GitHub", "CI/CD", "Linux", "Vercel", "AWS"],
+    label:  "Ferramentas",
+    skills: ["Git", "GitHub", "VS Code", "NPM"],
   },
 ];
 
 const certifications = [
-  { name: "Meta Front-End Developer",         issuer: "Meta / Coursera",    year: "2023" },
-  { name: "Node.js Application Developer",    issuer: "OpenJS Foundation",  year: "2022" },
-  { name: "Google UX Design Certificate",     issuer: "Google / Coursera",  year: "2022" },
+  { name: "HTML & CSS",        issuer: "Curso em Vídeo", year: "" },
+  { name: "Git & GitHub",      issuer: "Tiago Matos",    year: "" },
+  { name: "English Intermediate", issuer: "ABC Fluente", year: "" },
 ];
-
 function SectionLabel({ children }) {
   return (
     <div className="flex items-center gap-3 mb-2">

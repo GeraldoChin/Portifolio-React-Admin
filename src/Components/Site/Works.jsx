@@ -135,6 +135,18 @@ function ProjectCard({ project, index }) {
 export default function Works() {
   const [activeFilter, setActiveFilter] = useState("All");
 
+// <<<<<<< HEAD
+// =======
+//   // 🔹 Dados estáticos dos projetos
+//   const projects = [
+//     { id: 1, title: "Mobile App", category: "Mobile", status: "Concluído", image: "mobile.png" },
+//     { id: 2, title: "E-commerce Store", category: "E-commerce", status: "Concluído", image: "e-comerce.png" },
+//     { id: 3, title: "Admin Dashboard", category: "UI/UX Design", status: "Concluído", image: "Admin.png" },
+//     { id: 4, title: "SEO Audit", category: "SEO Optimization", status: "Concluído", image: "devclub.png" },
+//   ];
+
+//   // 🔹 Geração de filtros automaticamente
+// >>>>>>> pagina-estatica
   const filters = ["All", ...new Set(projects.map(p => p.category))];
   const filteredProjects = projects.filter(
     p => activeFilter === "All" || p.category === activeFilter
