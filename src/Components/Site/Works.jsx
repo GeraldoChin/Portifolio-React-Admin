@@ -28,31 +28,31 @@ const projects = [
     category: "Mobile",
     status: "Concluído",
     image: "mobile.png",
-    techs: ["React", "Node.js", "MongoDB", "Tailwind"],
+    techs: ["React", "Node.js", "MongoDB", "TypeScript"],
   },
   {
     id: 2,
     title: "E-commerce Store",
     category: "E-commerce",
     status: "Concluído",
-    image: "project2.jpg",
-    techs: ["Next.js", "TypeScript", "Shopify", "Tailwind"],
+    image: "e-comerce.png",
+    techs: ["Shopify", "JavaScript", "Tailwind"],
   },
   {
     id: 3,
-    title: "Landing Page",
+    title: "Admin Dashboard",
     category: "UI/UX Design",
     status: "Concluído",
-    image: "project3.jpg",
-    techs: ["React", "Figma", "Tailwind"],
+    image: "Admin.png",
+    techs: ["Figma", "React", "Tailwind", "TypeScript"],
   },
   {
     id: 4,
     title: "SEO Audit",
     category: "SEO Optimization",
     status: "Concluído",
-    image: "project4.jpg",
-    techs: ["WordPress", "PHP", "JavaScript", "MySQL"],
+    image: "devclub.png",
+    techs: ["WordPress", "PHP", "MySQL"],
   },
 ];
 
@@ -62,9 +62,7 @@ function TechPill({ name }) {
   const Icon = tech.icon;
 
   return (
-    <div
-      className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/8 bg-gray-800/60 hover:bg-gray-700/60 hover:border-white/15 transition-all duration-200"
-    >
+    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-white/8 bg-gray-800/60 hover:bg-gray-700/60 hover:border-white/15 transition-all duration-200">
       <Icon style={{ color: tech.color }} size={12} className="flex-shrink-0" />
       <span className="text-[11px] font-medium text-gray-300 leading-none whitespace-nowrap">
         {tech.label}
@@ -115,7 +113,7 @@ function ProjectCard({ project, index }) {
         {/* Separador */}
         <div className="w-full h-px bg-white/5 mb-4" />
 
-        {/* Label + pills */}
+        {/* Stack */}
         <div>
           <p className="text-[10px] uppercase tracking-[0.15em] text-gray-600 font-medium mb-2">
             Stack
@@ -135,18 +133,6 @@ function ProjectCard({ project, index }) {
 export default function Works() {
   const [activeFilter, setActiveFilter] = useState("All");
 
-// <<<<<<< HEAD
-// =======
-//   // 🔹 Dados estáticos dos projetos
-//   const projects = [
-//     { id: 1, title: "Mobile App", category: "Mobile", status: "Concluído", image: "mobile.png" },
-//     { id: 2, title: "E-commerce Store", category: "E-commerce", status: "Concluído", image: "e-comerce.png" },
-//     { id: 3, title: "Admin Dashboard", category: "UI/UX Design", status: "Concluído", image: "Admin.png" },
-//     { id: 4, title: "SEO Audit", category: "SEO Optimization", status: "Concluído", image: "devclub.png" },
-//   ];
-
-//   // 🔹 Geração de filtros automaticamente
-// >>>>>>> pagina-estatica
   const filters = ["All", ...new Set(projects.map(p => p.category))];
   const filteredProjects = projects.filter(
     p => activeFilter === "All" || p.category === activeFilter
