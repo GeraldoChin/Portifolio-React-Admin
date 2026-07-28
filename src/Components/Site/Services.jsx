@@ -169,15 +169,16 @@ export default function Services() {
     <section id="service" className="py-20 bg-gray-900/20">
       <div className="max-w-6xl mx-auto px-6">
 
-        {/* título — mantido igual ao original */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
-            My Quality Services
-          </h2>
-          <p className="text-[#a78bfa]/70 max-w-2xl mx-auto">
-            We put your ideas and your wishes in the form of a unique web project that inspires you and your customers.
-          </p>
-        </div>
+   {/* título */}
+<div className="text-center mb-16">
+  <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
+    Meus Serviços de Qualidade
+  </h2>
+  <p className="text-[#a78bfa]/70 max-w-2xl mx-auto">
+    Transformamos as suas ideias e os seus desejos em um projeto web único,
+    que inspira você e os seus clientes.
+  </p>
+</div>
 
         {/* cards */}
         <div className="space-y-3">

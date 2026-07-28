@@ -34,7 +34,7 @@ export default function Hero() {
             transition={{ duration: 0.8 }}
             className="text-[#a78bfa] text-lg sm:text-xl md:text-2xl mb-2"
           >
-            I am Geraldo Chin
+          Ola, Chamo-me Geraldo Chin
           </motion.h2>
 
           <motion.h1
@@ -59,10 +59,10 @@ export default function Hero() {
               max-w-full mx-auto md:mx-0
             "
           >
-            I help you build brand for your business at an affordable price.
-            Thousands of clients have procured exceptional results while
-            working with our dedicated team. When an unknown printer took a
-            galley of type and scrambled it.
+            Sou desenvolvedor Full Stack e ajudo empresas e empreendedores a criar
+  websites, aplicações móveis e sistemas personalizados. Utilizo
+  tecnologias modernas para desenvolver soluções seguras, rápidas e
+  escaláveis, transformando desafios em resultados concretos.
           </motion.p>
 
           <motion.div

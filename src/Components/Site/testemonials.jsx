@@ -55,14 +55,14 @@ export default function Testimonials() {
     <section className="py-20 bg-[#0d0b14] ">
       <div className="max-w-6xl mx-auto px-6">
         {/* Título */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
-            My Client's Stories
-          </h2>
-          <p className="text-purple-300 max-w-2xl mx-auto">
-            Empowering people in a new digital journey with my super services
-          </p>
-        </div>
+     <div className="text-center mb-16">
+  <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
+    Histórias dos Meus Clientes
+  </h2>
+  <p className="text-purple-300 max-w-2xl mx-auto">
+    Ajudando pessoas e empresas a iniciarem uma nova jornada digital através das minhas soluções.
+  </p>
+</div>
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">

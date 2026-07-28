@@ -153,9 +153,9 @@ export default function Works() {
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
             My Recent Works
           </h2>
-          <p className="text-[#a78bfa]/70 text-sm sm:text-base max-w-xl mx-auto">
-            We put your ideas and your wishes in the form of a unique web project.
-          </p>
+       <p className="text-[#a78bfa]/70 text-sm sm:text-base max-w-xl mx-auto">
+  Transformamos as suas ideias e os seus objetivos num projeto web único.
+</p>
         </motion.div>
 
         {/* Filtros */}

@@ -57,9 +57,9 @@ export default function Skills() {
           <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
             My Skills
           </h2>
-          <p className="text-purple-300 max-w-2xl mx-auto">
-            We put your ideas and your wishes in the form of a unique web project that inspires you and your customers.
-          </p>
+      <p className="text-purple-300 max-w-2xl mx-auto">
+  Transformamos as suas ideias e os seus desejos em um projeto web único que inspira você e os seus clientes.
+</p>
         </div>
 
         {/* Grid de Skills */}

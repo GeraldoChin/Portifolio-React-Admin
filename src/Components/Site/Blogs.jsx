@@ -61,15 +61,16 @@ export default function Blogs() {
   return (
     <section className="py-20 bg-gray-900/20">
       <div className="max-w-6xl mx-auto px-6">
-        {/* Título */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
-            Recent Blogs
-          </h2>
-          <p className="text-purple-300 max-w-2xl mx-auto">
-            We put your ideas and your wishes in the form of a unique web project that inspires you and your customers.
-          </p>
-        </div>
+  {/* Título */}
+<div className="text-center mb-16">
+  <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
+    Artigos Recentes
+  </h2>
+  <p className="text-purple-300 max-w-2xl mx-auto">
+    Partilho conhecimentos, experiências e conteúdos sobre desenvolvimento
+    web, tecnologia e inovação digital.
+  </p>
+</div>
 
         {/* Grid de blogs */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">

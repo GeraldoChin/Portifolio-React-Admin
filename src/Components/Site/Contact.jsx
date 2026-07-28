@@ -45,30 +45,37 @@ export default function Contact() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16">
 
-          {/* Info */}
-          <div ref={infoRef}>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
-              Let's work together!
-            </h2>
-            <p className="text-white/70 mb-8 leading-relaxed max-w-md text-sm sm:text-base">
-              I design and code beautifully simple things and I love what I do. Just simple like that!
-            </p>
+ {/* Info */}
+<div ref={infoRef}>
+  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-white to-[#a78bfa] bg-clip-text text-transparent">
+    Vamos trabalhar juntos!
+  </h2>
 
-            <div className="flex flex-col gap-5 sm:gap-6">
-              {contactItems.map(({ icon: Icon, label, value }) => (
-                <div key={label} className="flex items-center gap-4">
-                  <div className="w-11 h-11 sm:w-12 sm:h-12 flex-shrink-0 flex items-center justify-center bg-gray-900/50 border border-[#a78bfa]/30 rounded-lg text-[#a78bfa] text-lg sm:text-xl">
-                    <Icon />
-                  </div>
-                  <div>
-                    <h4 className="text-[#a78bfa] text-xs sm:text-sm mb-0.5">{label}</h4>
-                    <p className="text-white/80 text-sm sm:text-base">{value}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+  <p className="text-white/70 mb-8 leading-relaxed max-w-md text-sm sm:text-base">
+    Desenvolvo e crio soluções digitais simples, modernas e eficientes.
+    Tenho paixão pelo que faço e transformo ideias em experiências
+    digitais funcionais.
+  </p>
 
+  <div className="flex flex-col gap-5 sm:gap-6">
+    {contactItems.map(({ icon: Icon, label, value }) => (
+      <div key={label} className="flex items-center gap-4">
+        <div className="w-11 h-11 sm:w-12 sm:h-12 flex-shrink-0 flex items-center justify-center bg-gray-900/50 border border-[#a78bfa]/30 rounded-lg text-[#a78bfa] text-lg sm:text-xl">
+          <Icon />
+        </div>
+
+        <div>
+          <h4 className="text-[#a78bfa] text-xs sm:text-sm mb-0.5">
+            {label}
+          </h4>
+          <p className="text-white/80 text-sm sm:text-base">
+            {value}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
           {/* Form */}
           <div ref={formRef}>
             <form className="bg-gray-900/40 backdrop-blur border border-white/5 rounded-xl p-5 sm:p-8 flex flex-col gap-4 sm:gap-5 shadow-lg shadow-purple-500/5">
