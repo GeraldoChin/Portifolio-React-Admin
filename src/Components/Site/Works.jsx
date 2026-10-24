@@ -42,7 +42,7 @@ const projects = [
     category: "E-commerce",
     status: "Concluído",
     image: "e-comerce.png",
-    techs: ["Shopify", "JavaScript", "Tailwind"],
+    techs: ["React", "JavaScript", "Tailwind"],
     images: ["e-comerce.png", "e-comerce-2.png"],
     liveUrl: "https://exemplo-ecommerce.com",
   },

@@ -1,9 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function Contact() {
   const infoRef = useRef(null);
   const formRef = useRef(null);
+  const [isSending, setIsSending] = useState(false);
+  const [status, setStatus] = useState(null);
 
   useEffect(() => {
     const elements = [infoRef.current, formRef.current];
@@ -35,10 +37,42 @@ export default function Contact() {
   }, []);
 
   const contactItems = [
-    { icon: FaPhone,         label: "Call Me",   value: "+258 84 123 4567" },
-    { icon: FaEnvelope,      label: "Email Me",  value: "gerrald@example.com" },
-    { icon: FaMapMarkerAlt,  label: "Address",   value: "Nampula, Moçambique" },
+    { icon: FaPhone,         label: "Contacte-me",   value: "+258 87 5696885" },
+    { icon: FaEnvelope,      label: "Email ",  value: "geeraldochin@gmail.com" },
+    { icon: FaMapMarkerAlt,  label: "Endereço",   value: "Beira, Moçambique" },
   ];
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsSending(true);
+    setStatus(null);
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    try {
+      const apiUrl = import.meta.env.VITE_CONTACT_API_URL || "/api/contact";
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.get("name"),
+          email: formData.get("email"),
+          subject: formData.get("subject"),
+          message: formData.get("message"),
+          website: formData.get("website"),
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Não foi possível enviar a mensagem.");
+
+      form.reset();
+      setStatus({ type: "success", message: "Mensagem enviada com sucesso. Obrigado pelo contacto!" });
+    } catch (error) {
+      setStatus({ type: "error", message: error.message || "Erro de ligação. Tente novamente mais tarde." });
+    } finally {
+      setIsSending(false);
+    }
+  };
 
   return (
     <section id="contact" className="py-16 sm:py-20 bg-[#0d0b14]">
@@ -78,22 +112,28 @@ export default function Contact() {
 </div>
           {/* Form */}
           <div ref={formRef}>
-            <form className="bg-gray-900/40 backdrop-blur border border-white/5 rounded-xl p-5 sm:p-8 flex flex-col gap-4 sm:gap-5 shadow-lg shadow-purple-500/5">
+            <form onSubmit={handleSubmit} className="bg-gray-900/40 backdrop-blur border border-white/5 rounded-xl p-5 sm:p-8 flex flex-col gap-4 sm:gap-5 shadow-lg shadow-purple-500/5">
+              <div className="absolute -left-[9999px]" aria-hidden="true">
+                <label htmlFor="contact-website">Website</label>
+                <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col">
-                  <label className="text-[#a78bfa] text-xs sm:text-sm mb-1">Your Name *</label>
+                  <label className="text-[#a78bfa] text-xs sm:text-sm mb-1">Nome *</label>
                   <input
                     type="text"
+                    name="name"
                     placeholder="Name *"
                     required
                     className="bg-gray-900/60 border border-[#a78bfa]/20 rounded-md p-3 text-white text-sm placeholder:text-white/40 focus:border-[#a78bfa] focus:ring-1 focus:ring-[#a78bfa]/30 outline-none transition"
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label className="text-[#a78bfa] text-xs sm:text-sm mb-1">Your Email *</label>
+                  <label className="text-[#a78bfa] text-xs sm:text-sm mb-1">Email *</label>
                   <input
                     type="email"
+                    name="email"
                     placeholder="Email *"
                     required
                     className="bg-gray-900/60 border border-[#a78bfa]/20 rounded-md p-3 text-white text-sm placeholder:text-white/40 focus:border-[#a78bfa] focus:ring-1 focus:ring-[#a78bfa]/30 outline-none transition"
@@ -102,29 +142,38 @@ export default function Contact() {
               </div>
 
               <div className="flex flex-col">
-                <label className="text-[#a78bfa] text-xs sm:text-sm mb-1">Subject *</label>
+                <label className="text-[#a78bfa] text-xs sm:text-sm mb-1">Assunto *</label>
                 <input
                   type="text"
-                  placeholder="Subject *"
+                  name="subject"
+                  placeholder="Assunto *"
                   required
                   className="bg-gray-900/60 border border-[#a78bfa]/20 rounded-md p-3 text-white text-sm placeholder:text-white/40 focus:border-[#a78bfa] focus:ring-1 focus:ring-[#a78bfa]/30 outline-none transition"
                 />
               </div>
 
               <div className="flex flex-col">
-                <label className="text-[#a78bfa] text-xs sm:text-sm mb-1">Your Message *</label>
+                <label className="text-[#a78bfa] text-xs sm:text-sm mb-1">Mensagem *</label>
                 <textarea
-                  placeholder="Your Message *"
+                  placeholder="Mensagem *"
+                  name="message"
                   required
                   className="bg-gray-900/60 border border-[#a78bfa]/20 rounded-md p-3 text-white text-sm placeholder:text-white/40 focus:border-[#a78bfa] focus:ring-1 focus:ring-[#a78bfa]/30 outline-none min-h-[120px] resize-y transition"
                 />
               </div>
 
+              {status && (
+                <p role="status" aria-live="polite" className={`text-sm ${status.type === "success" ? "text-green-400" : "text-red-400"}`}>
+                  {status.message}
+                </p>
+              )}
+
               <button
                 type="submit"
+                disabled={isSending}
                 className="w-full mt-2 bg-gradient-to-r from-[#a78bfa] to-[#6b3ff0] hover:opacity-90 text-white font-semibold py-3 px-6 rounded-lg transition shadow-md shadow-purple-500/20 text-sm sm:text-base"
               >
-                Send Message
+                {isSending ? "A enviar..." : "Enviar mensagem"}
               </button>
             </form>
           </div>
